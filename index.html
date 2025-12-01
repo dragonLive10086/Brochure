@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DND5E 招募：风骸岛之龙</title>
+    <style>
+        /* --- 全局字体引入 --- */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #0f172a; /* 深海蓝 */
+            --text-color: #cbd5e1; /* 灰白 */
+            --accent-gold: #f59e0b; /* 龙息金 */
+            --accent-red: #ef4444; /* 警告红 */
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --border-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(to bottom, #0f172a, #020617);
+            color: var(--text-color);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* --- 装饰性背景 (模拟海浪/风暴) --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1500293392418-c0cb4906eb43?q=80&w=2000&auto=format&fit=crop') no-repeat center center/cover;
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* --- 标题区 --- */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 4rem 0;
+            border-bottom: 2px solid var(--accent-gold);
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- 通用卡片样式 --- */
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            transition: transform 0.2s;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            color: #e2e8f0;
+            font-size: 1.8rem;
+            border-left: 4px solid var(--accent-gold);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- 剧情简介 --- */
+        .lore p {
+            margin-bottom: 1.2rem;
+            text-indent: 2em;
+            text-align: justify;
+        }
+        
+        .lore blockquote {
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #94a3b8;
+        }
+
+        /* --- 基本信息网格 --- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid #334155;
+        }
+
+        .info-item strong {
+            display: block;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* --- 列表样式 --- */
+        ul {
+            list-style-position: inside;
+            margin-left: 0.5rem;
+        }
+        
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- 警告区域 --- */
+        .warning-section {
+            border: 1px solid var(--accent-red);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        
+        .warning-section h2 {
+            border-left-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* --- 页脚联系方式 --- */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 2rem;
+        }
+
+        .contact-btn {
+            background: var(--accent-gold);
+            color: #0f172a;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+            background: #fbbf24;
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
+        }
+
+        /* --- 响应式调整 --- */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.5rem; }
+            .container { padding: 1rem; }
+            section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>风骸岛之龙</h1>
+            <div class="subtitle">Dragon of Stormwreck Isle</div>
+            <p style="margin-top: 1rem; color: #64748b;">D&D 5E 剑湾冒险模组</p>
+        </header>
+
+        <!-- 剧情简介 -->
+        <section class="lore">
+            <h2>冒险缘起</h2>
+            <p>
+                根据传说，两支龙族存在于世界存在的第一天。善良的铂金龙巴哈姆特创造了金属龙，邪恶的五头龙后提亚马特则创造了色彩龙。这些金属龙和色彩龙和他们的创造者一样有着世仇，在剑湾进行着长久不息的争斗。
+            </p>
+            <p>
+                很久以前，远古红龙夏洛丝在剑湾上下肆虐。三条金属龙与其战斗并将她囚禁在海床之下。他们相信海水会熄灭她的火焰并将她永远禁锢，但是夏洛丝的怒火让海底火山爆发以至于形成<strong>风骸岛</strong>。
+            </p>
+            <blockquote>
+                “所有的公开历史书籍都记录着夏洛丝已经死在了风骸岛之下，但是色彩龙及其追随者始终低语着她还活着，并总有一天将从牢笼中脱出。”
+            </blockquote>
+            <p>
+                六十年前，精灵贤者茹娜拉为了平息岛上因红龙魔法而狂暴的能量，在此建立了名为“巨龙休息处”的修道院。在她的指导下，这里成为了剑湾寻求宁静与开悟之人的圣地。
+            </p>
+            <p>
+                <strong>但不幸的是，如今的风骸岛正处于多事之秋。</strong>附近海域船难频发，更有传闻蓝龙盘踞于此。在这样的情况下，各怀目的的你们在1491DR的深秋，接受了红色人鱼号船长罗德的委托，护送物资前往风骸岛，由此拉开这场冒险的帷幕……
+            </p>
+        </section>
+
+        <!-- 基本信息 -->
+        <section class="info">
+            <h2>冒险情报</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>规则版本</strong>
+                    DND 5E (2014)
+                </div>
+                <div class="info-item">
+                    <strong>预估等级</strong>
+                    LV 1 - 6
+                </div>
+                <div class="info-item">
+                    <strong>游玩平台</strong>
+                    FVTT + Discord (语音)
+                </div>
+                <div class="info-item">
+                    <strong>开团时间</strong>
+                    每周三、周五 19:00-22:00
+                </div>
+                <div class="info-item">
+                    <strong>期望人数</strong>
+                    5人 (招满即止)
+                </div>
+                <div class="info-item">
+                    <strong>预计时长</strong>
+                    5-8次聚会 (+第0回)
+                </div>
+            </div>
+        </section>
+
+        <!-- 建卡与环境 -->
+        <section class="requirements">
+            <h2>车卡与环境要求</h2>
+            <div class="columns">
+                <div class="column">
+                    <h3 style="color:var(--accent-gold); margin-bottom:1rem;">建卡规则</h3>
+                    <ul>
+                        <li><strong>属性：</strong>采用27buy购点或固定数组。</li>
+                        <li><strong>种族/职业：</strong>默认只开剑眼塔扩展。</li>
+                        <li><strong>限制：</strong>背景禁邪恶、禁粉红（色情相关）。</li>
+                        <li><strong>扩展：</strong>如需骰点或开其他书目请单独商量。</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3 style="color:var(--accent-gold); margin-bottom:1rem;">硬件需求</h3>
+                    <ul>
+                        <li>电脑端操作FVTT。</li>
+                        <li>清晰的麦克风，环境安静。</li>
+                        <li>懂得科学上网或肉身在国外（连接FVTT与Discord需要）。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 注意事项与警告 -->
+        <section class="warning-section">
+            <h2>注意事项 (必读)</h2>
+            <div class="columns">
+                <div class="column">
+                    <h3 style="color:var(--accent-red); margin-bottom:1rem;">以下情况介意勿入</h3>
+                    <ul style="color:#fca5a5;">
+                        <li>第一次带团 (新手DM)</li>
+                        <li>存在房规与模组内容魔改</li>
+                        <li>渣文笔、尬聊、口胡</li>
+                        <li>部分文本和图片由AI生成</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3 style="color:var(--accent-red); margin-bottom:1rem;">不欢迎以下玩家</h3>
+                    <ul style="color:#fca5a5;">
+                        <li>不遵守基本礼仪 / 攻击性强</li>
+                        <li>规则律师 / 杠精</li>
+                        <li>自闭人 (拒绝交流)</li>
+                        <li>时间不稳定 / 经常鸽子</li>
+                        <li>粉红人 / 寻找艳遇者</li>
+                        <li>过度COSPLAY (戏精导致无法推进)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 备注与公约 -->
+        <section class="contract">
+            <h2>冒险公约</h2>
+            <ul>
+                <li><strong>共同目标：</strong>默认将共同完成战役作为最终目标，不应偏离。</li>
+                <li><strong>沟通为先：</strong>如果想玩特殊BD或整活，请务必先与我沟通。</li>
+                <li><strong>第0回：</strong>我们将进行相性确认，探讨不应出现的内容（雷点）。</li>
+                <li><strong>基本礼仪：</strong>互相尊重，禁止性别/种族歧视、色情、虐待等过激内容。</li>
+                <li><strong>新手友好：</strong>即使没用过FVTT也欢迎，团内有教程。</li>
+            </ul>
+            <p style="margin-top:1rem; font-size:0.9rem; color:#64748b;">* 进群后请先查看群文件房规，若无法接受可自行退出。</p>
+        </section>
+
+        <!-- 页脚联系 -->
+        <footer>
+            <p style="margin-bottom: 1.5rem;">准备好踏上风骸岛了吗？</p>
+            <button class="contact-btn" onclick="copyContact()">
+                <span>联系烛龙：81428758</span>
+            </button>
+            <div id="toast" style="visibility: hidden; margin-top: 10px; color: #4ade80;">已复制到剪贴板！</div>
+        </footer>
+    </div>
+
+    <script>
+        function copyContact() {
+            const qq = "81428758";
+            navigator.clipboard.writeText(qq).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.visibility = 'visible';
+                setTimeout(() => {
+                    toast.style.visibility = 'hidden';
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动添加QQ：81428758');
+            });
+        }
+    </script>
+</body>
+</html>
