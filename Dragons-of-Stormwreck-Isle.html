@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D跑团招募：风骸岛之龙</title>
+    <style>
+        /* --- 全局变量与重置 --- */
+        :root {
+            --primary-color: #0f172a; /* 深蓝背景 */
+            --secondary-color: #1e293b; /* 卡片背景 */
+            --accent-color: #f59e0b; /* 金色点缀 */
+            --text-color: #e2e8f0; /* 浅灰文字 */
+            --heading-font: 'Georgia', 'SimSun', serif; /* 衬线体标题 */
+            --body-font: system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 动画类 --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 导航栏 --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(15, 23, 42, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-family: var(--heading-font);
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .nav-links a {
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        /* --- 首屏 Hero Section --- */
+        header {
+            height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), 
+                        url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); /* 这里使用了一张通用奇幻风景图，你可以替换为模组封面 */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        header h1 {
+            font-family: var(--heading-font);
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.5);
+        }
+
+        header p {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: transform 0.2s, background-color 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: #d97706;
+        }
+
+        /* --- 通用区块样式 --- */
+        section {
+            padding: 5rem 10%;
+        }
+
+        h2 {
+            font-family: var(--heading-font);
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        /* --- 故事背景 --- */
+        .story-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .story-text p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .story-img {
+            width: 100%;
+            height: 300px;
+            background: #334155;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            /* 实际使用时请替换为 <img src="..."> */
+            background-image: url('https://images.unsplash.com/photo-1615672930487-6a41a7e6c759?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- 游戏特色 --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--secondary-color);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #334155;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* --- 跑团信息 --- */
+        #info {
+            background-color: var(--secondary-color);
+        }
+
+        .info-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .info-item strong {
+            color: var(--accent-color);
+            min-width: 100px;
+            font-size: 1.1rem;
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: #020617;
+            border-top: 1px solid #334155;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .social-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            .story-container {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none; /* 简化版：移动端隐藏菜单 */
+            }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航 -->
+    <nav>
+        <div class="logo">D&D 5E</div>
+        <div class="nav-links">
+            <a href="#story">背景故事</a>
+            <a href="#features">游戏特色</a>
+            <a href="#info">招募信息</a>
+            <a href="#contact">立即报名</a>
+        </div>
+    </nav>
+
+    <!-- 首屏 -->
+    <header>
+        <h1 class="fade-in">风骸岛之龙</h1>
+        <p class="fade-in">Dragons of Stormwreck Isle</p>
+        <p class="fade-in" style="font-style: italic; margin-top: -1rem;">探索古代遗迹，揭开龙族秘密，开启你的冒险之旅。</p>
+        <br>
+        <a href="#contact" class="cta-button fade-in">加入冒险</a>
+    </header>
+
+    <!-- 故事背景 -->
+    <section id="story">
+        <h2 class="fade-in">冒险背景</h2>
+        <div class="story-container">
+            <div class="story-text fade-in">
+                <p>风骸岛（Stormwreck Isle）是一座充满了古代魔法与龙族历史的神秘岛屿。传说这里曾是善龙与恶龙交战的古战场，巨龙的陨落改变了岛屿的地貌与生态。</p>
+                <p>如今，一座名为“龙憩院”的修道院耸立于此，致力于维护和平与平衡。然而，岛上的元素力量正在躁动，海难频发，僵尸横行，更有传言称一条强大的蓝龙正在觊觎岛屿深处的秘密。</p>
+                <p>你们将扮演一群初出茅庐的冒险者，因各自的理由来到这座岛屿。你们能否通过龙族的试炼，阻止即将到来的灾难？</p>
+            </div>
+            <div class="story-img fade-in" title="风暴中的岛屿">
+                <!-- 这里由CSS背景图控制，实际使用可插入 <img> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏特色 -->
+    <section id="features">
+        <h2 class="fade-in">为什么选择这个模组？</h2>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🛡️</span>
+                <h3>新手完美入门</h3>
+                <p>《风骸岛之龙》是D&D 5E最新的新手盒模组。剧情紧凑，引导完善，非常适合0基础或想要轻松体验跑团乐趣的玩家。</p>
+            </div>
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🐉</span>
+                <h3>经典龙与地下城</h3>
+                <p>探索遗迹、对抗亡灵、通过社交解谜，当然还有最重要的——龙！这里包含D&D最核心的奇幻体验。</p>
+            </div>
+            <div class="feature-card fade-in">
+                <span class="feature-icon">📜</span>
+                <h3>预设人物卡</h3>
+                <p>不知道怎么车卡？没关系！模组提供5张背景故事与主线紧密结合的预设人物卡，上手即玩。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 跑团信息 -->
+    <section id="info">
+        <h2 class="fade-in">车队信息</h2>
+        <div class="info-list fade-in">
+            <div class="info-item">
+                <strong>跑团平台</strong>
+                <span>语音软件（KOOK/Discord） + 跑团平台（Owlbear Rodeo / FVTT / 纯文字团）</span>
+            </div>
+            <div class="info-item">
+                <strong>预计时间</strong>
+                <span>每周末晚上 20:00 - 23:00（具体人齐后商议）</span>
+            </div>
+            <div class="info-item">
+                <strong>招募人数</strong>
+                <span>3 - 5 人（新手优先，欢迎老手带新）</span>
+            </div>
+            <div class="info-item">
+                <strong>玩家要求</strong>
+                <span>
+                    1. 守时，不鸽子（有事提前请假）<br>
+                    2. 尊重DM和其他玩家，拒绝“也就是我想那样”<br>
+                    3. 保持好奇心，享受角色扮演
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚/联系方式 -->
+    <footer id="contact">
+        <div class="contact-box fade-in">
+            <h3>准备好出发了吗？</h3>
+            <p style="margin: 1rem 0;">无论你是挥舞巨剑的战士，还是掌控奥术的法师，风骸岛都等待着你的到来。</p>
+            <p>请联系 DM 获取更多信息或提交报名申请：</p>
+            
+            <!-- 修改这里的链接 -->
+            <a href="https://wpa.qq.com/msgrd?v=3&uin=12345678&site=qq&menu=yes" target="_blank" class="social-btn">
+                QQ联系: 12345678
+            </a>
+            <!-- 或者 -->
+            <!-- <a href="mailto:your-email@example.com" class="social-btn">发送邮件</a> -->
+        </div>
+        <p style="font-size: 0.8rem; color: #64748b; margin-top: 2rem;">
+            Dungeons & Dragons and Dragons of Stormwreck Isle are trademarks of Wizards of the Coast LLC. <br>
+            本页面仅用于非商业跑团招募宣传。
+        </p>
+    </footer>
+
+    <script>
+        // 简单的滚动显现动画脚本
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 动画只播放一次
+                    }
+                });
+            }, observerOptions);
+
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
